@@ -21,7 +21,7 @@ export default function About() {
       <div className="flex flex-col text-gray-100 m-2 gap-5 md:flex-row mb-10">
         <div>
           <Image  
-            src={portfolioImage.src}
+            src={portfolioImage}
             alt="Image description"
             className="h-auto  rounded-lg shadow-xl dark:shadow-gray-800"
           />
