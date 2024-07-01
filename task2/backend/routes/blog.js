@@ -18,13 +18,13 @@ router.get("/",async (req, res) => {
  });
  
 
- router.post("/post",async (req, res) => {
+ router.post("/post",authMiddleware,async (req, res) => {
      const { title,body } = req.body;
  
      try {
          const post = await Blog.create({
              title: title.slice(0, 100),
-             author: req.body.userId,
+             author: req.userId,
              body:body
          });
  
@@ -71,7 +71,7 @@ router.get("/",async (req, res) => {
  });
  
 
- router.delete("/post/:id",async (req, res) => {
+ router.delete("/post/:id",authMiddleware,async (req, res) => {
      try {
        
          if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -105,7 +105,7 @@ router.get("/",async (req, res) => {
      }
  });
 
-router.put("/post/:id",async (req,res)=>{
+router.put("/post/:id",authMiddleware,async (req,res)=>{
 
      try {
        

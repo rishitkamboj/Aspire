@@ -5,10 +5,9 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
-router.get("/:id", async (req, res) => {
+router.get("/:id",async (req, res) => {
     try {
         const comments = await Comment.find({
-            userId: req.body.userId,
             blogId: req.params.id
         });
 
@@ -27,9 +26,9 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-router.post("/:id", async (req, res) => {
+router.post("/:id", authMiddleware,async (req, res) => {
     const { body } = req.body;
-    const { userId } = req.body;
+   
 
     if (!body || !userId) {
         return res.status(400).json({
@@ -39,7 +38,7 @@ router.post("/:id", async (req, res) => {
 
     try {
         const comment = await Comment.create({
-            userId,
+            userId: req.user.id,
             blogId: req.params.id,
             body
         });
@@ -63,11 +62,11 @@ router.post("/:id", async (req, res) => {
 
 
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id",authMiddleware, async (req, res) => {
     try{
         const comment = await Comment.findOneAndDelete({
             _id: req.params.id,
-            userId:req.body.userId
+            userId:req.userId
         });
 
         if(!comment){

@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const { Message } = require('../db');
+const { authMiddleware } = require('../middleware');
 
 
-router.post('/', async (req, res) => {
+router.post('/',authMiddleware, async (req, res) => {
   try {
-    const { sender, receiver, content } = req.body; 
+    const {  receiver, content } = req.body; 
+    const sender=req.userId;
     if(sender === receiver) return res.status(400).json({ error: 'Sender and receiver cannot be the same' });
 
     const newMessage = new Message({
-      sender,
+     sender,
       receiver,
       content
     });
@@ -22,9 +24,10 @@ router.post('/', async (req, res) => {
 });
 
 
-router.get('/:userId1/:userId2', async (req, res) => {
+router.get('/:userId1/:userId2',authMiddleware, async (req, res) => {
   try {
-    const { userId1, userId2 } = req.params;
+    const userId1=req.userId;
+    const {  userId2 } = req.params;
 
     const messages = await Message.find({
       $or: [

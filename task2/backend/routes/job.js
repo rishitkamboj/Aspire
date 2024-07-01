@@ -28,10 +28,10 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.post("/postjob", async (req, res) => {
+router.post("/postjob",authMiddleware, async (req, res) => {
     try {
         const job = await Job.create({
-            userId: req.body.userId,
+            userId: req.userId,
             title: req.body.title,
             description: req.body.description,
             location: req.body.location,
@@ -62,11 +62,11 @@ router.post("/postjob", async (req, res) => {
 
 
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id",authMiddleware, async (req, res) => {
     try{
         const job= await Job.findOneAndDelete({
             _id: req.params.id,
-            userId: req.body.userId
+            userId: req.userId
         });
 
         if(!job){
