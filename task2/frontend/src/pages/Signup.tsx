@@ -18,7 +18,7 @@ export default function Signup() {
     }
   }, [navigate]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     setButton("Signing Up...");
 
@@ -29,9 +29,9 @@ export default function Signup() {
         username,
         password,
       });
-
-      alert("Successfully signed up, Please login to continue.");
-      navigate("/signin");
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.name));
+      navigate("/home");
     } catch (err) {
       console.error(err);
       setButton("Sign Up");

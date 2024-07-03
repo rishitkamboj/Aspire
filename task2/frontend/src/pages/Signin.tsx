@@ -28,7 +28,8 @@ export default function Signin() {
 
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
-        navigate("/dashboard");
+        localStorage.setItem("user", JSON.stringify(response.data.name));
+        navigate("/home");
       } else {
         alert("Invalid Credentials");
         setButton("Login");
