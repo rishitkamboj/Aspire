@@ -58,7 +58,8 @@ const token=jwt.sign({userid},JWT_SECRET);
 
 res.json({
      message: "User created successfully",
-     token: token
+     token: token,
+     name: user.firstname
  })
 
 
@@ -94,7 +95,8 @@ const signinBody = zod.object({
     if (passwordCheck) {
         const token = jwt.sign({ userId: user._id }, JWT_SECRET);
         return res.json({
-            token: token
+            token: token,
+            name: user.firstname
         });
     } else {
         return res.status(401).json({
